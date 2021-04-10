@@ -1,0 +1,1 @@
+ cc   -I /usr/local/include cub.c -o Cub3d -L /usr/local/lib  -lmlx  -lXext -lX11 -lm 
