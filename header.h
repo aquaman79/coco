@@ -39,12 +39,13 @@ int taily = 400/15;
 
 int px = 1000/2;
 int py = 400/2;
-float rotation = M_PI;
+//float rotation = M_PI;
 
 struct player{
 int ver;
 int hori ;
 };
+float rotation = M_PI/2;
 
 typedef struct s_data {
     void        *img;
@@ -62,12 +63,13 @@ struct mywin
     t_data      img;
     struct player play ;        
 };
+
 void            my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void        drawcube(struct mywin win, int x , int y,int color );
 void         reykey_hook(struct mywin *new);
 int             key_hook(int keycode, struct mywin *new);
 void        draw(struct mywin *new);
-void    update(struct mywin *new , int *px,int *py,float *rotation);
+void    update(struct mywin *new , int *px,int *py);
 void    creati (struct mywin *new);
 int drawc(struct mywin *new);
 void dda(int x1, int y1, int x2, int y2, t_data *img);

@@ -97,7 +97,7 @@ void dda(int x1, int y1, int x2, int y2, t_data *img)
         i++;
     }
 }
-void draw_line(int a, int b, float angle, int d, t_data *img)
+void draw_line(int a, int b, float rotation, int d, t_data *img)
 {
     int i;
     int c;
@@ -108,15 +108,16 @@ void draw_line(int a, int b, float angle, int d, t_data *img)
         d = 50;
     while (i <= d)
     {
-        a = (px) + cos(angle) * i;
-        b = (py) + sin(angle) * i;
+        a = (px) + cos(rotation) * i;
+        b = (py) + sin(rotation) * i;
         my_mlx_pixel_put(img, a, b, c);
         i++;
     }
 
-    a = (px) + cos(angle) * 55;
-    b = (py) + sin(angle) * 55;
+    a = (px) + cos(rotation) * 55;
+    b = (py) + sin(rotation) * 55;
     my_mlx_pixel_put(img, a, b, c + 210);
+
 }
 
 void draw_circle(struct mywin *new, int px, int py, int d)
@@ -151,7 +152,7 @@ void draw_the_player(struct mywin *new, int px, int py)
 
     //// the right line
     draw_line(px, py,rotation, l, &new->img);
-
+    //rotation=M_PI/2;
   //  draw_line(px, py, 180 * M_PI / 180, l, &new->img);
 }
 
@@ -161,7 +162,7 @@ void reykey_hook(struct mywin *new)
     new->play.hori = 0;
     new->play.ver = 0;
     new->play.ver = 0;
-   //*rotation = 1;
+   //rotation = M_PI/2;
 }
 
 int key_hook(int keycode, struct mywin *new)
@@ -180,6 +181,7 @@ int key_hook(int keycode, struct mywin *new)
         new->play.hori = +1;
     else
         new->play.hori = 0;
+    //new->play.rotation=M_PI/2;
    // printf("Hello from key_hook!\n");
     //printf("%d \n",new->play.ver);
  //   printf("cou %d cou", keycode);
@@ -203,32 +205,21 @@ void draw(struct mywin *new)
         j++;
     }
 }
-void update(struct mywin *new, int *px, int *py, float *rotation)
+void update(struct mywin *new, int *px, int *py)//, float *rotation)
 {
-
     *px = *px + new->play.ver;
     *py = *py + new->play.hori;
-    if (new->play.ver == -1 )
-    {
-     //   *rotation = 2*(*rotation *-1 );
-            *rotation = M_PI *-1;
-            if(*rotation >0)
-                *rotation = (*rotation *-1 );
-    }
-    if ((new->play.ver == 1 && *rotation <0)) 
-    {
-        *rotation = 2*M_PI * -1  ;
-        if(*rotation <0)
-              * rotation = (*rotation *-1 );
-    }
+    float *a ; 
+    a =&rotation;
+   if (new->play.ver == -1 )
+           *a =M_PI/2 +M_PI/2 ;
+    if (new->play.ver == 1 ) 
+        *a = 0;
     if(new->play.hori==1)
-    {
-       * rotation=M_PI/2;
-    }
-            printf(" btata %f \n",*rotation);
+        *a=M_PI/2;
+    if(new->play.hori==-1)
+        *a=-M_PI/2;
       reykey_hook(new);
-  // * rotation = M_PI;
-
 }
 void creati(struct mywin *new)
 {
@@ -247,7 +238,7 @@ int drawc(struct mywin *new)
     {
         creati(new);
         draw(new);
-        update(new, &px, &py, &rotation);
+        update(new, &px, &py);
         draw_the_player(new, px, py);
         mlx_put_image_to_window(new->mlx, new->win, new->img.img, 0, 0);
     }
