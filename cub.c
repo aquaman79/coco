@@ -139,6 +139,18 @@ void draw_circle(struct mywin *new, int px, int py, int d)
             my_mlx_pixel_put(&new->img, x + ox, y + oy, 0x0FF0000);
     }
 }
+void draw_all_line(struct mywin *new,int px , int py)
+{
+    float rayangle = rotation -(FOV/2);
+    int i = 0 ; 
+    int l=50;
+    while (i < tailx)
+    {
+        rayangle =rayangle+FOV/tailx;
+        draw_line(px, py,rayangle, l, &new->img);
+        i++;
+    }
+}
 void draw_the_player(struct mywin *new, int px, int py)
 {
     int d = 20;
@@ -152,6 +164,7 @@ void draw_the_player(struct mywin *new, int px, int py)
 
     //// the right line
     draw_line(px, py,rotation, l, &new->img);
+    draw_all_line(new,px,py);
     //rotation=M_PI/2;
   //  draw_line(px, py, 180 * M_PI / 180, l, &new->img);
 }
@@ -162,6 +175,7 @@ void reykey_hook(struct mywin *new)
     new->play.hori = 0;
     new->play.ver = 0;
     new->play.ver = 0;
+    new->play.angle=0;
    //rotation = M_PI/2;
 }
 
@@ -181,10 +195,14 @@ int key_hook(int keycode, struct mywin *new)
         new->play.hori = +1;
     else
         new->play.hori = 0;
+    if(keycode== rotr)
+        new->play.angle=1;
+    if(keycode ==rotl)
+        new->play.angle=-1;
     //new->play.rotation=M_PI/2;
    // printf("Hello from key_hook!\n");
     //printf("%d \n",new->play.ver);
- //   printf("cou %d cou", keycode);
+   printf("cou %d cou \n", keycode);
     return 0;
 }
 
@@ -219,6 +237,15 @@ void update(struct mywin *new, int *px, int *py)//, float *rotation)
         *a=M_PI/2;
     if(new->play.hori==-1)
         *a=-M_PI/2;
+    if(new->play.angle==1)
+    {
+        if(*a!=M_PI/2)
+            *a= *a- 0.0174533 ;
+    }
+    if(new->play.angle==-1)
+    {
+            *a= *a+ 0.0174533 ;
+    }
       reykey_hook(new);
 }
 void creati(struct mywin *new)

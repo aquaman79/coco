@@ -31,12 +31,15 @@
 #define right 65363
 #define down 65364
 #define up 65362
+#define rotr 100
+#define rotl 97
+
 # define MLX_TYPE_SHM_PIXMAP 3
 # define MLX_TYPE_SHM 2
 
 int tailx = 1000/25;
 int taily = 400/15;
-
+float FOV= 1.0472 ;
 int px = 1000/2;
 int py = 400/2;
 //float rotation = M_PI;
@@ -44,6 +47,7 @@ int py = 400/2;
 struct player{
 int ver;
 int hori ;
+float angle;
 };
 float rotation = M_PI/2;
 
