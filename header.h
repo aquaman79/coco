@@ -37,11 +37,11 @@
 # define MLX_TYPE_SHM_PIXMAP 3
 # define MLX_TYPE_SHM 2
 
-int tailx = 1000/25;
-int taily = 400/15;
+int tailx = 800/25;
+int taily = 480/15;
 float FOV= 1.0472 ;
-int px = 1000/2;
-int py = 400/2;
+int px = 800/2;
+int py = 480/2;
 //float rotation = M_PI;
 
 struct player{
@@ -63,7 +63,7 @@ struct mywin
 {
     void        *mlx;
     void        *win;
-    int         map[25][25];
+    int         map[15][25];
     t_data      img;
     struct player play ;        
 };
@@ -77,11 +77,6 @@ void    update(struct mywin *new , int *px,int *py);
 void    creati (struct mywin *new);
 int drawc(struct mywin *new);
 void dda(int x1, int y1, int x2, int y2, t_data *img);
-
-
-
-
-
 
 #endif
 

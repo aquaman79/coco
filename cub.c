@@ -223,6 +223,23 @@ void draw(struct mywin *new)
         j++;
     }
 }
+
+void draw_hot(struct mywin *new)
+{
+    int x = 0 ;
+    int y = 0;
+     while (x < 15)
+    {
+     dda(1, x * (32 ), (25) * (32 ), x *(32),&new->img);
+     x++;
+    }
+    while(y<25)
+    {
+    dda(y * (32), 1, y * (32 ), (32) * 15, &new->img);
+    y++;
+    }
+}
+
 void update(struct mywin *new, int *px, int *py)//, float *rotation)
 {
     *px = *px + new->play.ver;
@@ -250,14 +267,14 @@ void update(struct mywin *new, int *px, int *py)//, float *rotation)
 }
 void creati(struct mywin *new)
 {
-    new->img.img = mlx_new_image(new->mlx, 1000, 400);
+    new->img.img = mlx_new_image(new->mlx, 800, 480);
     new->img.addr = mlx_get_data_addr(new->img.img, &new->img.bits_per_pixel, &new->img.line_length,
                                       &new->img.endian);
 }
 int drawc(struct mywin *new)
 {
     draw(new);
-
+    draw_hot(new);
     draw_the_player(new, px, py);
     mlx_put_image_to_window(new->mlx,
      new->win, new->img.img, 0, 0);
@@ -265,6 +282,7 @@ int drawc(struct mywin *new)
     {
         creati(new);
         draw(new);
+        draw_hot(new);
         update(new, &px, &py);
         draw_the_player(new, px, py);
         mlx_put_image_to_window(new->mlx, new->win, new->img.img, 0, 0);
@@ -274,7 +292,7 @@ int drawc(struct mywin *new)
 
 int main()
 {
-    int map[25][25] =
+    int map[15][25] =
         {
             {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
             {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -294,7 +312,7 @@ int main()
         };
     struct mywin new;
     new.mlx = mlx_init();
-    new.win = mlx_new_window(new.mlx, 1000, 400, "hello");
+    new.win = mlx_new_window(new.mlx, 800, 480, "hello");
     memcpy(new.map, map, sizeof(int) * 25 * 15);
     creati(&new);
 
