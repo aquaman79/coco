@@ -230,14 +230,38 @@ void draw_hot(struct mywin *new)
     int y = 0;
      while (x < 15)
     {
-     dda(1, x * (32 ), (25) * (32 ), x *(32),&new->img);
+   dda(1, x * (32 ), (25) * (32 ), x *(32),&new->img);
+   dda(x *(32), 1, x* (32 ), (32) * 15, &new->img);
      x++;
     }
+   // printf("%d",x);
+         //  dda(24 *(32), 1, 24* (32 ), (32) * 15, &new->img);
+
+   x = 25 ; 
+   while(x>=15)
+   {
+               dda(x *(32), 1, x* (32 ), (32) * 15, &new->img);
+               x--;
+   }
+      //  dda(24 *(32), 1, 24* (32 ), (32) * 15, &new->img);
+
+    /*while (x>0)
+    {
+     dda(x *(32), 1, x* (32 ), (32) * 15, &new->img);
+
+         printf("%d",x);
+
+     x--;
+    }*/
+    //printf("%d",x);
+    
+
+    /*
     while(y<25)
     {
     dda(y * (32), 1, y * (32 ), (32) * 15, &new->img);
     y++;
-    }
+    }*/
 }
 
 void update(struct mywin *new, int *px, int *py)//, float *rotation)
