@@ -18,6 +18,8 @@ OBJ := obj
 $(OBJ)/%.o:	$(SRC)/%.c
 	$(CC) -I$(SRC) -c $< -o $@
 GCC = gcc   -c $(SRC)
+MLX = -L /usr/local/lib -lmlx -framework OpenGL -framework AppKit
+
 all:
 	$(GCC) $(SRCS)
 clean:

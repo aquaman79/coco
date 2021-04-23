@@ -27,12 +27,12 @@
 #define TAIL 32
 #define X LIN*TAIL
 #define Y COL *TAIL
-#define left 65361
-#define right 65363
-#define down 65364
-#define up 65362
-#define rotr 100
-#define rotl 97
+#define left 123
+#define right 124
+#define down 125
+#define up 126
+#define rotr 2
+#define rotl 0
 
 # define MLX_TYPE_SHM_PIXMAP 3
 # define MLX_TYPE_SHM 2
