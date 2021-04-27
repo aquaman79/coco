@@ -10,18 +10,18 @@
 #                                                                              #
 # **************************************************************************** #
 
+Name=my.a
 HEADERS=header.h
 
 SRC := cub.c
-OBJ := obj
-
-$(OBJ)/%.o:	$(SRC)/%.c
-	$(CC) -I$(SRC) -c $< -o $@
-GCC = gcc   -c $(SRC)
-MLX = -L /usr/local/lib -lmlx -framework OpenGL -framework AppKit
-
+OBJ := $(SRC:.c=.o)
 all:
-	$(GCC) $(SRCS)
+	$(NAME)
+$(NAME):
+				gcc -L /usr/local/lib -lmlx -framework OpenGL -framework AppKit ($SRC)
+run:
+	@ $(FLAGS) $(SRC) -o $(NAME)
+	./cub3D 
 clean:
 		/bin/rm -f *.o 
 fclean:	clean

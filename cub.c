@@ -108,14 +108,14 @@ void draw_line(int a, int b, float rotation, int d, t_data *img)
         d = 50;
     while (i <= d)
     {
-        a = (px) + cos(rotation) * i;
-        b = (py) + sin(rotation) * i;
+        a = (px) + cos(-rotation) * i;
+        b = (py) + sin(-rotation) * i;
         my_mlx_pixel_put(img, a, b, c);
         i++;
     }
 
-    a = (px) + cos(rotation) * 55;
-    b = (py) + sin(rotation) * 55;
+    a = (px) + cos(-rotation) * 55;
+    b = (py) + sin(-rotation) * 55;
     my_mlx_pixel_put(img, a, b, c + 210);
 
 }
@@ -139,17 +139,23 @@ void draw_circle(struct mywin *new, int px, int py, int d)
             my_mlx_pixel_put(&new->img, x + ox, y + oy, 0x0FF0000);
     }
 }
+
+float rayanglee=0;
 void draw_all_line(struct mywin *new,int px , int py)
 {
-    float rayangle = rotation -(FOV/2);
+    float *ptr ; 
+    ptr = &rayanglee;
+    *ptr = rotation -(FOV/2);
+   // printf("myrotation %f \n",rotation);
     int i = 0 ; 
     int l=50;
     while (i < tailx)
     {
-        rayangle =rayangle+FOV/tailx;
-        draw_line(px, py,rayangle, l, &new->img);
+        *ptr =*ptr+FOV/tailx;
+        draw_line(px, py,*ptr, l, &new->img);
         i++;
     }
+    //printf("hada howa %f \n",rayanglee);
 }
 void draw_the_player(struct mywin *new, int px, int py)
 {
@@ -163,7 +169,7 @@ void draw_the_player(struct mywin *new, int px, int py)
     //  draw_line(px, py, angle, l, &new->img);
 
     //// the right line
-    draw_line(px, py,rotation, l, &new->img);
+   draw_line(px, py,rotation, l, &new->img);
     draw_all_line(new,px,py);
     //rotation=M_PI/2;
   //  draw_line(px, py, 180 * M_PI / 180, l, &new->img);
@@ -199,10 +205,6 @@ int key_hook(int keycode, struct mywin *new)
         new->play.angle=1;
     if(keycode ==rotl)
         new->play.angle=-1;
-    //new->play.rotation=M_PI/2;
-   // printf("Hello from key_hook!\n");
-    //printf("%d \n",new->play.ver);
-   //printf("cou %d cou \n", keycode);
     return 0;
 }
 
@@ -224,60 +226,20 @@ void draw(struct mywin *new)
     }
 }
 
-void draw_hot(struct mywin *new)
-{
-    int x = 0 ;
-    int y = 0;
-     while (x < 15)
-    {
-   dda(1, x * (32 ), (25) * (32 ), x *(32),&new->img);
-  // dda(x *(32), 1, x* (32 ), (32) * 15, &new->img);
-     x++;
-    }
-   // printf("%d",x);
-         //  dda(24 *(32), 1, 24* (32 ), (32) * 15, &new->img);
-
-   x = 25 ; 
-   /*while(x>=15)
-   {
-               dda(x *(32), 1, x* (32 ), (32) * 15, &new->img);
-               x--;
-   }*/
-      //  dda(24 *(32), 1, 24* (32 ), (32) * 15, &new->img);
-
-    /*while (x>0)
-    {
-     dda(x *(32), 1, x* (32 ), (32) * 15, &new->img);
-
-         printf("%d",x);
-
-     x--;
-    }*/
-    //printf("%d",x);
-    
-
-    /*
-    while(y<25)
-    {
-    dda(y * (32), 1, y * (32 ), (32) * 15, &new->img);
-    y++;
-    }*/
-}
-
-void update(struct mywin *new, int *px, int *py)//, float *rotation)
+void update(struct mywin *new, float *px, float *py)//, float *rotation)
 {
     *px = *px + new->play.ver;
     *py = *py + new->play.hori;
     float *a ; 
     a =&rotation;
    if (new->play.ver == -1 )
-           *a = 3.142; //M_PI/2 +M_PI/2 ;
+           *a = M_PI/2 +M_PI/2 ;
     if (new->play.ver == 1 ) 
-        *a = 6.283; //0
-    if(new->play.hori==1)
-        *a=1.571; //Pi/2
+        *a = 0;
     if(new->play.hori==-1)
-        *a=-1.571; //-Pi/2
+        *a=+M_PI/2;
+    if(new->play.hori==+1)
+        *a=3*M_PI/2;
     if(new->play.angle==1)
     {
         if(*a!=M_PI/2)
@@ -297,52 +259,52 @@ void creati(struct mywin *new)
 }
 float firsty; 
 float firstx;
-void findfirstcord_h(void)
+float normalizeAngle(float angle)
 {
-   
-    float *ptr1,*ptr2;
-    ptr1=&firsty;
-    ptr2=&firstx; 
-    *ptr1= (py/32)*32;
-  // printf("%f \n",*ptr1);
-   // *ptr2= px+((*ptr1-py)/tan(rotation));
-  //printf("%f \n",*ptr2);
+    float *ptr ; 
+    ptr = &angle ; 
+    *ptr = *ptr /(2*M_PI);
+    if(*ptr<0)
+    {
+        *ptr = (2*M_PI)+(*ptr);
+    }
+    return(*ptr);
 }
-void find(struct mywin *new)
+
+void pointA(struct mywin *new)
 {
-    //findfirstcord_h();
-  //  float nexthortouchx=firstx;
-    float nexthortouchy=firsty;
-   // printf(" jojo %d \n",(int)nexthortouchx/32);
-     printf(" gogo %d \n",(int)nexthortouchy/32);
+    //printf("ma rotation est %f \n", rayanglee);
 
-    int wallx = 0 ; 
-    int wally =0 ;
-  //  printf("%f \n",nexthortouchx);
-    //while(nexthortouchx >= 0 && nexthortouchx <= 32*15 && nexthortouchy >0 && nexthortouchy <= 32*25)
-    //{
-       // int i =(int)nexthortouchx/32;
-        int j = (int)nexthortouchy/32;
-     printf("%d \n",new->map[1][7]);
-
-     //   printf("i == %d \n",i);
-       // printf("j == %d \n",j);
-     //   if(new->map[i][j]==1)
-       //     printf("%d \n",new->map[i][j]);
-       // else
-        //printf("hani nta \n");
-    //nexthortouchx++;
-    //nexthortouchy++;
-    //}
-
-
-
-
+    struct firstpo hor ; 
+    float raydown = 0 ;
+    float rayup =0; 
+    float rayright= 0 ;
+    float rayleft = 0;
+    //rayanglee = normalizeAngle(rayanglee);
+    printf("ma rotation est %f \n", rayanglee);
+    if(rayanglee > 0 && rayanglee < M_PI)
+    raydown =-rayanglee;
+    else 
+    rayup = rayanglee;
+    if(rayanglee >0.5*M_PI || rayanglee >1.5*M_PI)
+    rayleft = rayanglee;
+    else 
+    rayright= rayanglee;
+    hor.yinter = floor((py/32))*32; 
+    if(raydown)
+    hor.yinter+=32;
+     hor.xinter = px+(hor.yinter-(py))/tan(rayanglee);
+     /*float ystep = tailx;
+     ystep *= rayup? -1:1 ;
+     float xstep =tailx/tan(rayanglee);
+    xstep *= (rayleft && xstep >0 )? -1 : 1 ;*/ 
+    dda(px,py,hor.xinter,hor.yinter,&new->img);
 }
+
 int drawc(struct mywin *new)
 {
     draw(new);
-    draw_hot(new);
+   // draw_hot(new);
     draw_the_player(new, px, py);
     mlx_put_image_to_window(new->mlx,
      new->win, new->img.img, 0, 0);
@@ -350,11 +312,12 @@ int drawc(struct mywin *new)
     {
         creati(new);
         draw(new);
-        draw_hot(new);
+        //draw_hot(new);
         update(new, &px, &py);
         draw_the_player(new, px, py);
-        findfirstcord_h();
-        find(new);
+        pointA(new);
+       // findfirstcord_h();
+        //find(new);
         mlx_put_image_to_window(new->mlx, new->win, new->img.img, 0, 0);
     }
     return 0;

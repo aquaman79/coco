@@ -40,8 +40,8 @@
 int tailx = 800/25;
 int taily = 480/15;
 float FOV= 1.0472 ;
-int px = 800/2;
-int py = 480/2;
+float px = 800/2;
+float py = 480/2;
 //float rotation = M_PI;
 
 struct player{
@@ -67,13 +67,20 @@ struct mywin
     t_data      img;
     struct player play ;        
 };
-
+struct step{
+    float xstep; 
+    float ystep; 
+};
+struct firstpo{
+    float xinter; 
+    float yinter; 
+};
 void            my_mlx_pixel_put(t_data *data, int x, int y, int color);
 void        drawcube(struct mywin win, int x , int y,int color );
 void         reykey_hook(struct mywin *new);
 int             key_hook(int keycode, struct mywin *new);
 void        draw(struct mywin *new);
-void    update(struct mywin *new , int *px,int *py);
+void    update(struct mywin *new , float *px,float *py);
 void    creati (struct mywin *new);
 int drawc(struct mywin *new);
 void dda(int x1, int y1, int x2, int y2, t_data *img);
