@@ -288,6 +288,15 @@ void pointA(struct mywin *new)
      ystep *= rayup? -1:1 ;
      float xstep =tailx/tan(rayanglee);
     xstep *= (rayleft && xstep >0 )? -1 : 1 ;
+    float nextHortztouchx = hor.xinter;
+    float nextHortztouchy = hor.yinter;
+    while(nextHortztouchx >= 0 && nextHortztouchx <=25*32 && nextHortztouchy >= 0 && nextHortztouchy <=15*32)
+    {
+        float xtocheck = nextHortztouchx;
+        float ytocheck = nextHortztouchy+(rayup ? -1 :0);
+        if()
+
+    }
     dda(px,py,hor.xinter,hor.yinter,&new->img);
 }
 
