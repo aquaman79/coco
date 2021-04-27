@@ -108,14 +108,14 @@ void draw_line(int a, int b, float rotation, int d, t_data *img)
         d = 50;
     while (i <= d)
     {
-        a = (px) + cos(-rotation) * i;
-        b = (py) + sin(-rotation) * i;
+        a = (px) + cos(rotation) * i;
+        b = (py) + sin(rotation) * i;
         my_mlx_pixel_put(img, a, b, c);
         i++;
     }
 
-    a = (px) + cos(-rotation) * 55;
-    b = (py) + sin(-rotation) * 55;
+    a = (px) + cos(rotation) * 55;
+    b = (py) + sin(rotation) * 55;
     my_mlx_pixel_put(img, a, b, c + 210);
 
 }
@@ -237,9 +237,9 @@ void update(struct mywin *new, float *px, float *py)//, float *rotation)
     if (new->play.ver == 1 ) 
         *a = 0;
     if(new->play.hori==-1)
-        *a=+M_PI/2;
+        *a=+3*M_PI/2;
     if(new->play.hori==+1)
-        *a=3*M_PI/2;
+        *a=M_PI/2;
     if(new->play.angle==1)
     {
         if(*a!=M_PI/2)
@@ -263,7 +263,6 @@ float normalizeAngle(float angle)
 {
     float *ptr ; 
     ptr = &angle ; 
-    *ptr = *ptr /(2*M_PI);
     if(*ptr<0)
     {
         *ptr = (2*M_PI)+(*ptr);
@@ -276,28 +275,19 @@ void pointA(struct mywin *new)
     //printf("ma rotation est %f \n", rayanglee);
 
     struct firstpo hor ; 
-    float raydown = 0 ;
-    float rayup =0; 
-    float rayright= 0 ;
-    float rayleft = 0;
-    //rayanglee = normalizeAngle(rayanglee);
+   rayanglee = normalizeAngle(rayanglee);
     printf("ma rotation est %f \n", rayanglee);
-    if(rayanglee > 0 && rayanglee < M_PI)
-    raydown =-rayanglee;
-    else 
-    rayup = rayanglee;
-    if(rayanglee >0.5*M_PI || rayanglee >1.5*M_PI)
-    rayleft = rayanglee;
-    else 
-    rayright= rayanglee;
+    int raydown = rayanglee >0 && rayanglee <M_PI ;
+    int rayup = !raydown;
+    int rayright=rayanglee >0.5*M_PI || rayanglee >1.5*M_PI;
+    int rayleft = !rayright;
     hor.yinter = floor((py/32))*32; 
-    if(raydown)
-    hor.yinter+=32;
+    hor.yinter += raydown ? tailx : 0;
      hor.xinter = px+(hor.yinter-(py))/tan(rayanglee);
-     /*float ystep = tailx;
+     float ystep = tailx;
      ystep *= rayup? -1:1 ;
      float xstep =tailx/tan(rayanglee);
-    xstep *= (rayleft && xstep >0 )? -1 : 1 ;*/ 
+    xstep *= (rayleft && xstep >0 )? -1 : 1 ;
     dda(px,py,hor.xinter,hor.yinter,&new->img);
 }
 
