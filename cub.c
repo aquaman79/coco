@@ -257,45 +257,48 @@ void creati(struct mywin *new)
     new->img.addr = mlx_get_data_addr(new->img.img, &new->img.bits_per_pixel, &new->img.line_length,
                                       &new->img.endian);
 }
+int check (struct mywin *new ,float x , float y)
+{
+    x =floor(x/tailx); 
+    y =floor(y/taily);
+    if(new->map[(int)x][(int)y]==1)
+    return 1 ;
+return 0 ; 
+}
 float firsty; 
 float firstx;
-float normalizeAngle(float angle)
-{
-    float *ptr ; 
-    ptr = &angle ; 
-    if(*ptr<0)
-    {
-        *ptr = (2*M_PI)+(*ptr);
-    }
-    return(*ptr);
-}
 
 void pointA(struct mywin *new)
 {
-    //printf("ma rotation est %f \n", rayanglee);
-
     struct firstpo hor ; 
-   rayanglee = normalizeAngle(rayanglee);
-    printf("ma rotation est %f \n", rayanglee);
+    int horz;
     int raydown = rayanglee >0 && rayanglee <M_PI ;
     int rayup = !raydown;
-    int rayright=rayanglee >0.5*M_PI || rayanglee >1.5*M_PI;
-    int rayleft = !rayright;
+    int rayleft =(rayanglee >= M_PI/2 && rayanglee <= 3*M_PI/2)  ? 1 : 0;
+    int rayright =!rayleft;
     hor.yinter = floor((py/32))*32; 
     hor.yinter += raydown ? tailx : 0;
      hor.xinter = px+(hor.yinter-(py))/tan(rayanglee);
-     float ystep = tailx;
-     ystep *= rayup? -1:1 ;
-     float xstep =tailx/tan(rayanglee);
-    xstep *= (rayleft && xstep >0 )? -1 : 1 ;
-    float nextHortztouchx = hor.xinter;
+    float ystep = taily; 
+    ystep *= rayup? -1:1 ;
+    float xstep = ystep/tan(rayanglee);
+    xstep *= (rayleft && xstep > 0 ) ? -1 : 1 ;
+    xstep *= (rayright && xstep <0 ) ? -1 :1 ;
+   float nextHortztouchx = hor.xinter;
     float nextHortztouchy = hor.yinter;
-    while(nextHortztouchx >= 0 && nextHortztouchx <=25*32 && nextHortztouchy >= 0 && nextHortztouchy <=15*32)
+    while(nextHortztouchx >= 0 && nextHortztouchx <=15*32 && nextHortztouchy >= 0 && nextHortztouchy <=25*32)
     {
-        float xtocheck = nextHortztouchx;
-        float ytocheck = nextHortztouchy+(rayup ? -1 :0);
-        if()
-
+        float touchx=nextHortztouchx; 
+        float touchy=nextHortztouchy +(rayup ? -1:0);
+        if(check(new,touchx,touchy)==1)
+        {
+            horz=new->map[(int)floor(touchx/32)][(int)floor(touchy/32)];
+            printf("%f \n",floor(touchx/32));
+        }
+        else 
+        nextHortztouchx +=xstep;
+        nextHortztouchy +=ystep;
+       // dda(px,py,nextHortztouchx,nextHortztouchy,&new->img);
     }
     dda(px,py,hor.xinter,hor.yinter,&new->img);
 }
